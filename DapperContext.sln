@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DapperContext.NET35", "DapperContext.NET35\DapperContext.NET35.csproj", "{CBAD325F-3F61-495A-BC28-177FF9CF0A13}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CBAD325F-3F61-495A-BC28-177FF9CF0A13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBAD325F-3F61-495A-BC28-177FF9CF0A13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBAD325F-3F61-495A-BC28-177FF9CF0A13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBAD325F-3F61-495A-BC28-177FF9CF0A13}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
