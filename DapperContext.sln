@@ -1,7 +1,18 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DapperContext.NET35", "DapperContext.NET35\DapperContext.NET35.csproj", "{CBAD325F-3F61-495A-BC28-177FF9CF0A13}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{73CE9CAB-EA50-447C-8B98-EB543C303DD9}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DapperContext.NET40", "DapperContext.NET40\DapperContext.NET40.csproj", "{2224F63F-3D00-4E24-A38A-86DE147E1A5A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,6 +24,10 @@ Global
 		{CBAD325F-3F61-495A-BC28-177FF9CF0A13}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CBAD325F-3F61-495A-BC28-177FF9CF0A13}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CBAD325F-3F61-495A-BC28-177FF9CF0A13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2224F63F-3D00-4E24-A38A-86DE147E1A5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2224F63F-3D00-4E24-A38A-86DE147E1A5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2224F63F-3D00-4E24-A38A-86DE147E1A5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2224F63F-3D00-4E24-A38A-86DE147E1A5A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

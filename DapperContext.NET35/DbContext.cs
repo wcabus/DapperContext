@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading;
@@ -81,23 +82,185 @@ namespace Dapper
             return currentTransaction;
         }
 
-        public IEnumerable<T> Query<T>(string sql, object param = null, int? commandTimeout = null, CommandType? commandType = null)
+#if !CSHARP30
+        /// <summary>
+        /// Return a list of dynamic objects, reader is closed after the call
+        /// </summary>
+        public IEnumerable<dynamic> Query(string sql, dynamic param = null, int? commandTimeout = null, CommandType? commandType = null)
         {
             CreateOrReuseConnection();
             //Dapper will open and close the connection for us if necessary.
-            return _connection.Query<T>(sql, param, GetCurrentTransaction(), true, commandTimeout, commandType);
+            return SqlMapper.Query<dynamic>(_connection, sql, param, GetCurrentTransaction(), true, commandTimeout, commandType);
+        }
+#else
+        /// <summary>
+        /// Return a list of dynamic objects, reader is closed after the call
+        /// </summary>
+        public IEnumerable<IDictionary<string, object>> Query(string sql, object param)
+        {
+            return Query(sql, param, null, null);
         }
 
-        //TODO Add Query<TFirst, TSecond, TReturn> and others
-            
-        public SqlMapper.GridReader QueryMultiple(string sql, object param = null, int? commandTimeout = null, CommandType? commandType = null)
+        /// <summary>
+        /// Return a list of dynamic objects, reader is closed after the call
+        /// </summary>
+        public IEnumerable<IDictionary<string, object>> Query(string sql, object param, CommandType? commandType)
+        {
+            return Query(sql, param, null, commandType);
+        }
+
+        /// <summary>
+        /// Return a list of dynamic objects, reader is closed after the call
+        /// </summary>
+        public IEnumerable<IDictionary<string, object>> Query(string sql, object param, int? commandTimeout, CommandType? commandType)
         {
             CreateOrReuseConnection();
             //Dapper will open and close the connection for us if necessary.
-            return _connection.QueryMultiple(sql, param, GetCurrentTransaction(), commandTimeout, commandType);
+            return _connection.Query(sql, param, GetCurrentTransaction(), true, commandTimeout, commandType);
+        }
+#endif
+
+#if CSHARP30
+        /// <summary>
+        /// Execute parameterized SQL  
+        /// </summary>
+        /// <returns>Number of rows affected</returns>
+        public int Execute(string sql, object param)
+        {
+            return Execute(sql, param, null, null);
         }
 
-        public int Execute(string sql, object param = null, int? commandTimeout = null, CommandType? commandType = null)
+        /// <summary>
+        /// Execute parameterized SQL
+        /// </summary>
+        /// <returns>Number of rows affected</returns>
+        public int Execute(string sql, object param, CommandType commandType)
+        {
+            return Execute(sql, param, null, commandType);
+        }
+        
+        /// <summary>
+        /// Executes a query, returning the data typed as per T
+        /// </summary>
+        /// <returns>A sequence of data of the supplied type; if a basic type (int, string, etc) is queried then the data from the first column in assumed, otherwise an instance is
+        /// created per row, and a direct column-name===member-name mapping is assumed (case insensitive).
+        /// </returns>
+        public IEnumerable<T> Query<T>(string sql, object param)
+        {
+            return Query<T>(sql, param, null, null);
+        }
+        
+        /// <summary>
+        /// Executes a query, returning the data typed as per T
+        /// </summary>
+        /// <returns>A sequence of data of the supplied type; if a basic type (int, string, etc) is queried then the data from the first column in assumed, otherwise an instance is
+        /// created per row, and a direct column-name===member-name mapping is assumed (case insensitive).
+        /// </returns>
+        public IEnumerable<T> Query<T>(string sql, object param, CommandType commandType)
+        {
+            return Query<T>(sql, param, null, commandType);
+        }
+        
+        /// <summary>
+        /// Execute a command that returns multiple result sets, and access each in turn
+        /// </summary>
+        public SqlMapper.GridReader QueryMultiple(string sql, object param)
+        {
+            return QueryMultiple(sql, param, null, null);
+        }
+
+        /// <summary>
+        /// Execute a command that returns multiple result sets, and access each in turn
+        /// </summary>
+        public SqlMapper.GridReader QueryMultiple(string sql, object param, CommandType commandType)
+        {
+            return QueryMultiple(sql, param, null, commandType);
+        }
+#endif
+
+#if CSHARP30
+        public IEnumerable<T> Query<T>(string sql, object param, int? commandTimeout, CommandType? commandType)
+#else
+        public IEnumerable<T> Query<T>(string sql, dynamic param = null, int? commandTimeout = null, CommandType? commandType = null)
+#endif
+        {
+            CreateOrReuseConnection();
+            //Dapper will open and close the connection for us if necessary.
+            return SqlMapper.Query<T>(_connection, sql, param, GetCurrentTransaction(), true, commandTimeout, commandType);
+        }
+
+#if CSHARP30
+        public IEnumerable<TReturn> Query<TFirst, TSecond, TReturn>(string sql, Func<TFirst, TSecond, TReturn> map, object param, string splitOn, int? commandTimeout, CommandType? commandType)
+#else
+        public IEnumerable<TReturn> Query<TFirst, TSecond, TReturn>(string sql, Func<TFirst, TSecond, TReturn> map, dynamic param = null, string splitOn = "Id", int? commandTimeout = null, CommandType? commandType = null)
+#endif
+        {
+            CreateOrReuseConnection();
+            //Dapper will open and close the connection for us if necessary.
+            return SqlMapper.Query(_connection, sql, map, param, GetCurrentTransaction(), true, splitOn, commandTimeout, commandType);
+        }
+
+#if CSHARP30
+        public IEnumerable<TReturn> Query<TFirst, TSecond, TThird, TReturn>(string sql, Func<TFirst, TSecond, TThird, TReturn> map, object param, string splitOn, int? commandTimeout, CommandType? commandType)
+#else
+        public IEnumerable<TReturn> Query<TFirst, TSecond, TThird, TReturn>(string sql, Func<TFirst, TSecond, TThird, TReturn> map, dynamic param = null, string splitOn = "Id", int? commandTimeout = null, CommandType? commandType = null)
+#endif
+        {
+            CreateOrReuseConnection();
+            //Dapper will open and close the connection for us if necessary.
+            return SqlMapper.Query(_connection, sql, map, param, GetCurrentTransaction(), true, splitOn, commandTimeout, commandType);
+        }
+
+#if CSHARP30
+        public IEnumerable<TReturn> Query<TFirst, TSecond, TThird, TFourth, TReturn>(string sql, Func<TFirst, TSecond, TThird, TFourth, TReturn> map, object param, string splitOn, int? commandTimeout, CommandType? commandType)
+#else
+        public IEnumerable<TReturn> Query<TFirst, TSecond, TThird, TFourth, TReturn>(string sql, Func<TFirst, TSecond, TThird, TFourth, TReturn> map, dynamic param = null, string splitOn = "Id", int? commandTimeout = null, CommandType? commandType = null)
+#endif
+        {
+            CreateOrReuseConnection();
+            //Dapper will open and close the connection for us if necessary.
+            return SqlMapper.Query(_connection, sql, map, param, GetCurrentTransaction(), true, splitOn, commandTimeout, commandType);
+        }
+
+#if !CSHARP30
+        public IEnumerable<TReturn> Query<TFirst, TSecond, TThird, TFourth, TFifth, TReturn>(string sql, Func<TFirst, TSecond, TThird, TFourth, TFifth, TReturn> map, dynamic param = null, string splitOn = "Id", int? commandTimeout = null, CommandType? commandType = null)
+        {
+            CreateOrReuseConnection();
+            //Dapper will open and close the connection for us if necessary.
+            return SqlMapper.Query(_connection, sql, map, param, GetCurrentTransaction(), true, splitOn, commandTimeout, commandType);
+        }
+
+        public IEnumerable<TReturn> Query<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TReturn>(string sql, Func<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TReturn> map, dynamic param = null, string splitOn = "Id", int? commandTimeout = null, CommandType? commandType = null)
+        {
+            CreateOrReuseConnection();
+            //Dapper will open and close the connection for us if necessary.
+            return SqlMapper.Query(_connection, sql, map, param, GetCurrentTransaction(), true, splitOn, commandTimeout, commandType);
+        }
+
+        public IEnumerable<TReturn> Query<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TSeventh, TReturn>(string sql, Func<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TSeventh, TReturn> map, dynamic param = null, string splitOn = "Id", int? commandTimeout = null, CommandType? commandType = null)
+        {
+            CreateOrReuseConnection();
+            //Dapper will open and close the connection for us if necessary.
+            return SqlMapper.Query(_connection, sql, map, param, GetCurrentTransaction(), true, splitOn, commandTimeout, commandType);
+        }
+#endif
+
+#if CSHARP30
+        public SqlMapper.GridReader QueryMultiple(string sql, object param, int? commandTimeout, CommandType? commandType)
+#else
+        public SqlMapper.GridReader QueryMultiple(string sql, dynamic param = null, int? commandTimeout = null, CommandType? commandType = null)
+#endif
+        {
+            CreateOrReuseConnection();
+            //Dapper will open and close the connection for us if necessary.
+            return SqlMapper.QueryMultiple(_connection, sql, param, GetCurrentTransaction(), commandTimeout, commandType);
+        }
+
+#if CSHARP30
+        public int Execute(string sql, object param, int? commandTimeout, CommandType? commandType)
+#else
+        public int Execute(string sql, dynamic param = null, int? commandTimeout = null, CommandType? commandType = null)
+#endif
         {
             CreateOrReuseConnection();
             //Dapper expects a connection to be open when calling Execute, so we'll have to open it.
@@ -105,7 +268,7 @@ namespace Dapper
             if (wasClosed) _connection.Open();
             try
             {
-                return _connection.Execute(sql, param, GetCurrentTransaction(), commandTimeout, commandType);
+                return SqlMapper.Execute(_connection, sql, param, GetCurrentTransaction(), commandTimeout, commandType);
             }
             finally
             {
