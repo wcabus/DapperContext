@@ -3,16 +3,31 @@ using System.Data;
 
 namespace Dapper
 {
+    /// <summary>
+    /// This class defines a unit of work, which encapsulates a set of operations that should 
+    /// be committed as a whole, or rolled back in case one of the statements inside the unit of work fails.
+    /// </summary>
     public class UnitOfWork : IDisposable
     {
         private IDbTransaction _transaction;
         private readonly Action<UnitOfWork> _onCommit;
         private readonly Action<UnitOfWork> _onRollback;
 
+        /// <summary>
+        /// Creates a new <see cref="UnitOfWork"/> instance.
+        /// </summary>
+        /// <param name="transaction">The underlying <see cref="IDbTransaction"/> object used to either commit or roll back the statements that are being performed inside this unit of work.</param>
+        /// <param name="onCommitOrRollback">An <see cref="Action{UnitOfWork}"/> that will be executed when the unit of work is being committed or rolled back.</param>
         public UnitOfWork(IDbTransaction transaction, Action<UnitOfWork> onCommitOrRollback) : this(transaction, onCommitOrRollback, onCommitOrRollback)
         {
         }
 
+        /// <summary>
+        /// Creates a new <see cref="UnitOfWork"/> instance.
+        /// </summary>
+        /// <param name="transaction">The underlying <see cref="IDbTransaction"/> object used to either commit or roll back the statements that are being performed inside this unit of work.</param>
+        /// <param name="onCommit">An <see cref="Action{UnitOfWork}"/> that will be executed when the unit of work is being committed.</param>
+        /// <param name="onRollback">An <see cref="Action{UnitOfWork}"/> that will be executed when the unit of work is being rolled back.</param>
         public UnitOfWork(IDbTransaction transaction, Action<UnitOfWork> onCommit, Action<UnitOfWork> onRollback)
         {
             _transaction = transaction;
@@ -20,15 +35,25 @@ namespace Dapper
             _onRollback = onRollback;
         }
 
+        /// <summary>
+        /// Retrieves the underlying <see cref="IDbTransaction"/> instance.
+        /// </summary>
         public IDbTransaction Transaction
         {
             get { return _transaction; }
         }
 
+        /// <summary>
+        /// SaveChanges will try and commit all statements that have been executed against the database inside this unit of work.
+        /// </summary>
+        /// <remarks>
+        /// If committing fails, the underlying <see cref="IDbTransaction"/> will be rolled back instead.
+        /// </remarks>
+        /// <exception cref="InvalidOperationException">Thrown if this unit of work has already been committed or rolled back.</exception>
         public void SaveChanges()
         {
             if (_transaction == null)
-                throw new InvalidOperationException("Cannot call SaveChanges more than once on the same unit of work.");
+                throw new InvalidOperationException("This unit of work has already been saved or undone.");
 
             try {
                 _transaction.Commit();
@@ -41,6 +66,10 @@ namespace Dapper
             }
         }
 
+        /// <summary>
+        /// Implements <see cref="IDisposable.Dispose"/>, and rolls back the statements executed inside this unit of work.
+        /// This makes it easier to use a unit of work instance inside a <c>using</c> statement (<c>Using</c> in VB.Net).
+        /// </summary>
         public void Dispose()
         {
             if (_transaction == null) return;

@@ -16,6 +16,11 @@ namespace Dapper
         private readonly ReaderWriterLockSlim _rwLock = new ReaderWriterLockSlim();
         private readonly LinkedList<UnitOfWork> _workItems = new LinkedList<UnitOfWork>();
 
+        /// <summary>
+        /// <para>Default constructor.</para>
+        /// <para>Uses the <paramref name="connectionStringName"/> to instantiate a <see cref="DbConnectionFactory"/>. This factory will be used to create connections to a database.</para>
+        /// </summary>
+        /// <param name="connectionStringName">The name of the connectionstring as defined in a app/web.config file's connectionstrings section.</param>
         public DbContext(string connectionStringName)
         {
             _connectionFactory = new DbConnectionFactory(connectionStringName);
