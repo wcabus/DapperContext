@@ -82,7 +82,7 @@ public void SaveOrder(Order order)
     {
         using (var scope = context.CreateUnitOfWork())
         {
-            order.OrderID = context.Query<int>("" +
+            order.OrderID = context.Query&lt;int&gt;(
                         "INSERT INTO Orders (CustomerID, OrderDate) VALUES (@CustomerID, @OrderDate);" +
                         "SELECT CAST(SCOPE_IDENTITY() as int)",
                         new {order.CustomerID, OrderDate = order.OrderDate.Value}).Single();
