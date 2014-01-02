@@ -1,0 +1,82 @@
+﻿<Window x:Class="DapperContext.WpfExample.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:converters="clr-namespace:DapperContext.WpfExample.Converters"
+        DataContext="{Binding Source={StaticResource Locator}, Path=Main}"
+        Title="Northwind" Height="350" Width="800">
+    
+    <Window.Resources>
+        <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
+    </Window.Resources>
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <DockPanel Margin="3">
+            <TextBlock Margin="3" FontSize="16" DockPanel.Dock="Top">Categories</TextBlock>
+            <ListBox 
+                 DataContext="{Binding Source={StaticResource Locator}, Path=Category}"
+                 ItemsSource="{Binding Categories}"
+                 DisplayMemberPath="CategoryName"
+                 Margin="3"
+                 MinWidth="100"
+                SelectedItem="{Binding Path=DataContext.SelectedCategory, RelativeSource={RelativeSource AncestorType=Window}}"
+                />
+        </DockPanel>
+
+        <Border Grid.Column="1" BorderThickness="1,0,0,0" BorderBrush="Black">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <DockPanel Margin="3">
+                    <TextBlock Margin="3" FontSize="16" DockPanel.Dock="Top">Products</TextBlock>
+                    <ListBox 
+                        DataContext="{Binding Source={StaticResource Locator}, Path=Product}"
+                        ItemsSource="{Binding Products}"
+                        DisplayMemberPath="ProductName"
+                        Margin="3"
+                        MinWidth="100"
+                        SelectedItem="{Binding Path=DataContext.SelectedProduct, RelativeSource={RelativeSource AncestorType=Window}}"
+                    />
+                </DockPanel>
+
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="1" Margin="3" Visibility="{Binding CurrentOrder, Converter={StaticResource NullToVisibilityConverter}}">
+                        <TextBlock>
+                            Your order currently contains <Run Text="{Binding CurrentOrder.Lines.Count, Mode=OneWay}" /> item(s).
+                        </TextBlock>
+                        <Button Command="{Binding SaveCommand}">Save Order</Button>
+                    </StackPanel>
+                    <StackPanel Margin="3" Visibility="{Binding SelectedProduct, Converter={StaticResource NullToVisibilityConverter}}">
+                        <TextBlock Margin="3" FontSize="16" DockPanel.Dock="Top">Product Details</TextBlock>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="10" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <TextBlock Margin="3" VerticalAlignment="Center">Name:</TextBlock>
+                            <TextBox Grid.Column="1" Margin="3" Padding="3" IsReadOnly="True" MinWidth="100" HorizontalAlignment="Left" Text="{Binding SelectedProduct.ProductName}" />
+                            <TextBlock Grid.Row="1" VerticalAlignment="Center" Margin="3">Price:</TextBlock>
+                            <TextBox Grid.Row="1" Grid.Column="1" Margin="3" Padding="3" IsReadOnly="True" MinWidth="30" HorizontalAlignment="Left" Text="{Binding SelectedProduct.UnitPrice, StringFormat={}{0:c2}}" />
+                            <Button Grid.Row="3" Grid.ColumnSpan="2" Margin="3" Padding="3" Command="{Binding AddToOrderCommand}">Add To Order</Button>
+                        </Grid>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

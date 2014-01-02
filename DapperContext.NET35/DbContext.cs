@@ -9,7 +9,7 @@ namespace Dapper
     /// <summary>
     /// A database context class for Dapper (https://github.com/SamSaffron/dapper-dot-net), based on http://blog.gauffin.org/2013/01/ado-net-the-right-way/#.UpWLPMSkrd2
     /// </summary>
-    public class DbContext
+    public class DbContext : IDisposable
     {
         private IDbConnection _connection;
         private readonly DbConnectionFactory _connectionFactory;
@@ -295,6 +295,34 @@ namespace Dapper
             _rwLock.ExitWriteLock();
 
             _connection.Close();
+        }
+
+        /// <summary>
+        /// Implements <see cref="IDisposable.Dispose"/>.
+        /// </summary>
+        public void Dispose()
+        {
+            //Use an upgradeable lock, because when we dispose a unit of work,
+            //one of the removal methods will be called (which enters a write lock)
+            _rwLock.EnterUpgradeableReadLock();
+            try
+            {
+                while (_workItems.Any())
+                {
+                    var workItem = _workItems.First;
+                    workItem.Value.Dispose(); //rollback, will remove the item from the LinkedList because it calls either RemoveTransaction or RemoveTransactionAndCloseConnection
+                }
+            }
+            finally
+            {
+                _rwLock.ExitUpgradeableReadLock();
+            }
+
+            if (_connection != null)
+            {
+                _connection.Dispose();
+                _connection = null;
+            }
         }
     }
 }
