@@ -59,12 +59,10 @@ Install-Package DapperContext -IncludePrerelease
 
 <pre>
 <code>
-
 protected DbContext CreateContext()
 {
     return new DbContext(ConfigurationManager.AppSettings["Database"]);
 }
-
 </code>
 </pre>
 
@@ -78,7 +76,6 @@ When you finish and click the Save Order button, the SaveOrder method will be ca
 
 <pre>
 <code>
-
 public void SaveOrder(Order order)
 {
     using (var context = CreateContext())
@@ -101,7 +98,6 @@ public void SaveOrder(Order order)
         }
     }
 }
-
 </code>
 </pre>
 
