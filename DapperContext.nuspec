@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>DapperContext</id>
-    <version>0.1.1-alpha</version>
+    <version>0.1.2-alpha</version>
     <authors>Wesley Cabus</authors>
     <owners>Wesley Cabus</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
@@ -11,9 +11,10 @@
     <description>DapperContext is a DbContext-like implementation for Dapper, supporting the Unit Of Work pattern and simplifying usage with repository classes and IOC containers.</description>
     <tags>dapper orm dbcontext sql unit-of-work repository</tags>
     <dependencies>
-      <dependency id="Dapper" version="1.8" />
+      <dependency id="Dapper" version="1.13" />
     </dependencies>
     <releaseNotes>
+        * 0.1.2    - Referenced a wrong version of the Dapper dependency. Fixed.
         * 0.1.1    - First alpha release.
     </releaseNotes>
   </metadata>
