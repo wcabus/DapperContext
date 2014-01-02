@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>DapperContext</id>
+    <version>0.1.1-alpha</version>
+    <authors>Wesley Cabus</authors>
+    <owners>Wesley Cabus</owners>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+    <projectUrl>http://wcabus.github.io/DapperContext</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>DapperContext is a DbContext-like implementation for Dapper, supporting the Unit Of Work pattern and simplifying usage with repository classes and IOC containers.</description>
+    <tags>dapper orm dbcontext sql unit-of-work repository</tags>
+    <dependencies>
+      <dependency id="Dapper" version="1.8" />
+    </dependencies>
+    <releaseNotes>
+        * 0.1.1    - First alpha release.
+    </releaseNotes>
+  </metadata>
+  <files>
+    <file src="DapperContext.NET40\bin\Release\DapperContext.dll" target="lib\net40" />
+    <file src="DapperContext.NET40\bin\Release\DapperContext.pdb" target="lib\net40" />
+    <file src="DapperContext.NET40\bin\Release\DapperContext.xml" target="lib\net40" />
+
+    <file src="DapperContext.NET35\bin\Release\DapperContext.dll" target="lib\net35" />
+    <file src="DapperContext.NET35\bin\Release\DapperContext.pdb" target="lib\net35" />
+    <file src="DapperContext.NET35\bin\Release\DapperContext.xml" target="lib\net35" />
+
+    <file src="DapperContext.NET35\**\*.cs" target="src" />
+  </files>
+</package>
