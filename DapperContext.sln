@@ -33,7 +33,6 @@ Global
 		{B85ED38C-5EAE-4EDF-A2A2-CFA7FD40B519}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B85ED38C-5EAE-4EDF-A2A2-CFA7FD40B519}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B85ED38C-5EAE-4EDF-A2A2-CFA7FD40B519}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B85ED38C-5EAE-4EDF-A2A2-CFA7FD40B519}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
