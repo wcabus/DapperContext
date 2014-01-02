@@ -57,7 +57,7 @@ Install-Package DapperContext -IncludePrerelease
 
 <p>In short, each repository class derives from BaseRepository. In this class, there is only one method:</p>
 
-<p>
+<pre>
 <code>
 
 protected DbContext CreateContext()
@@ -66,7 +66,7 @@ protected DbContext CreateContext()
 }
 
 </code>
-</p>
+</pre>
 
 <p>This method is being used to create a DbContext which will look at the Database appsetting value in the app.config file to determine which connectionstring setting will be used to connect to the database.<br/>
 Then, a repository can call the Query method to perform a SELECT statement.<br/>
@@ -76,7 +76,7 @@ Since either Dapper or DapperContext opens and closes the connection only when n
 <p>Inside the OrderService class, you can see the unit of work principle in action. When you add products to an order inside the application, the CreateOrder and CreateOrderDetail methods are being used to create the necessary instances and link them together.<br/>
 When you finish and click the Save Order button, the SaveOrder method will be called:</p>
 
-<p>
+<pre>
 <code>
 
 public void SaveOrder(Order order)
@@ -103,7 +103,7 @@ public void SaveOrder(Order order)
 }
 
 </code>
-</p>
+</pre>
 
 <p>If this method throws an exception, then the line <c>scope.SaveChanges();</c> will not be executed and the unit of work will be rolled back when it reaches the end of the <c>using</c> block. An error will occur, in example, if the same product is being added twice to a single order. This happens because the Order Detail table in the Northwind database has a primary key constraint on both OrderID and ProductID.</p>
 
